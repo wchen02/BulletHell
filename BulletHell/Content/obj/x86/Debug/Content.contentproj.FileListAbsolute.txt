@@ -1,0 +1,2 @@
+C:\Users\W1Nd0z37\Documents\My Dropbox\Visual Studio 2008\Projects\BulletHell\BulletHell\Content\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\W1Nd0z37\Documents\My Dropbox\Visual Studio 2008\Projects\BulletHell\BulletHell\Content\obj\x86\Debug\audio\audioEngine.xml

@@ -1,0 +1,3 @@
+Content\audio\audioEngine.xgs
+Content\audio\waveBank.xwb
+Content\audio\soundBank.xsb
