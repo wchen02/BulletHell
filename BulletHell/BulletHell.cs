@@ -40,6 +40,9 @@ namespace BulletHell
             _GLOBAL.Viewport = _GLOBAL.Graphics.GraphicsDevice.Viewport;
             _GLOBAL.ViewportRect = new Rectangle(_GLOBAL.Viewport.X, _GLOBAL.Viewport.Y, _GLOBAL.Viewport.Width, _GLOBAL.Viewport.Height);
             _GLOBAL.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            _GLOBAL.AudioEngine = new AudioEngine(@"Content\audio\audioEngine.xgs");
+            _GLOBAL.WaveBank = new WaveBank(_GLOBAL.AudioEngine, @"Content\audio\waveBank.xwb");
+            _GLOBAL.SoundBank = new SoundBank(_GLOBAL.AudioEngine, @"Content\audio\soundBank.xsb");
 
             base.Initialize();
             cursor = new Obj(cursorTexture, 0, 0);
@@ -49,9 +52,8 @@ namespace BulletHell
         {
             cursorTexture = _GLOBAL.ContentManager.Load<Texture2D>(@"cursor\normal");
             _GLOBAL.SpriteFont = _GLOBAL.ContentManager.Load<SpriteFont>(@"fonts\gamefont");
-            _GLOBAL.AudioEngine = new AudioEngine(@"Content\audio\audioEngine.xgs");
-            _GLOBAL.WaveBank = new WaveBank(_GLOBAL.AudioEngine, @"Content\audio\waveBank.xwb");
-            _GLOBAL.SoundBank = new SoundBank(_GLOBAL.AudioEngine, @"Content\audio\soundBank.xsb");
+            _GLOBAL.HuakanFont = _GLOBAL.ContentManager.Load<SpriteFont>(@"fonts\DFShaoNvW5-GB");
+
         }
 
         protected override void UnloadContent()
@@ -61,6 +63,7 @@ namespace BulletHell
         protected override void Update(GameTime gameTime)
         {
             mouse();
+            _GLOBAL.AudioEngine.Update();
             if (_GLOBAL.Quit)
                 Exit();
             _GLOBAL.InputHandler.Update(gameTime);

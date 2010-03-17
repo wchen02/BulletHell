@@ -19,36 +19,62 @@ namespace BulletHell.Game
 {
     public class Opening : GameState
     {
-        #region Fields
-        #endregion
+        private Texture2D background;
+        private GameState menu;
+        private bool isStartPressed;
+        private Vector2 originPos, startPos;
+        private float startScale;
+        public Opening() { }
 
-        #region Initialization
-        public Opening(GameStateManager gameStateManager)
+        protected override void Initialize()
         {
+            menu = new Menu();
+            originPos = new Vector2(_GLOBAL.Viewport.Width / 2 - (int)(11.0 / 2 * 15), _GLOBAL.Viewport.Height - 200);
+            startPos = originPos;
         }
 
-        protected override void Initialize(){}
-        #endregion
-
-        #region Contents
         internal override void LoadContent()
         {
+            background = _GLOBAL.ContentManager.Load<Texture2D>(@"sprites\background");
+            _GLOBAL.SoundBank.PlayCue("OpeningBGM");
         }
 
         protected override void UnloadContent() { }
-        #endregion
 
-        #region Update and Draw
-        internal override void Update(GameTime gameTime) { }
+        internal override void Update(GameTime gameTime) {
+            NeedUpdate = true;
+            NeedDraw = true;
+
+            if (!isStartPressed)
+            {
+                if (_GLOBAL.InputHandler.isKeyEnter())
+                {
+                    _GLOBAL.GameStateManager.activate(menu);
+                    _GLOBAL.SoundBank.PlayCue(_GLOBAL.onConfirm);
+                    isStartPressed = true;
+                }
+
+                startScale = 1.0f + (float)Math.Cos(gameTime.TotalGameTime.TotalSeconds * 1.2) / 20;
+
+                Matrix scalingStart = Matrix.CreateScale(startPos.X, startPos.Y, 1);
+                scalingStart = Matrix.Multiply(scalingStart, Matrix.CreateScale(startScale, startScale, 1.0f));
+
+                startPos = new Vector2((scalingStart.M11)/2, (scalingStart.M22)/2);
+            }
+        }
 
         internal override void Draw(GameTime gameTime)
         {
             _GLOBAL.SpriteBatch.Begin(SpriteBlendMode.AlphaBlend);
+            _GLOBAL.SpriteBatch.Draw(background, _GLOBAL.ViewportRect, Color.White);
+
+            if (!isStartPressed)
+            {
+                _GLOBAL.SpriteBatch.DrawString(_GLOBAL.HuakanFont, "Press Start", startPos,
+                    new Color(1.0f, 1.0f, 1.0f, 0.6f + (float)Math.Cos(gameTime.TotalGameTime.TotalSeconds * 1.2) / 3),
+                    0.0f, Vector2.Zero, startScale, SpriteEffects.None, 0);
+            }
             _GLOBAL.SpriteBatch.End();
         }
-        #endregion
-
-        #region Methods
-        #endregion
     }
 }

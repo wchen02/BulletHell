@@ -31,7 +31,7 @@ namespace BulletHell.System
             GameStatesToUpdate = new List<GameState>();
 
             base.Initialize();
-            activate(new Menu(this));
+            activate(new Opening());
         }
 
         protected override void LoadContent()

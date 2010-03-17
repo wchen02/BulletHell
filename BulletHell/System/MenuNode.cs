@@ -38,11 +38,5 @@ namespace BulletHell.System
             Title = title;
             Active = active;
         }
-
-        public void action()
-        {
-            GameState.NeedUpdate = true;
-            GameState.NeedDraw = true;
-        }
     }
 }

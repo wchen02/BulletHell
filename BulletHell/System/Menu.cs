@@ -20,26 +20,22 @@ namespace BulletHell.System
     public class Menu : GameState
     {
         #region Fields
-        private SpriteFont huakanFont;
         private MenuNode[] menuNodes;
         private string[] titles;
         private bool[] actives;
-        private Texture2D background, arrowTexture, dialogTexture;
-        private Obj arrow, dialogBox;
+        private Texture2D arrowTexture;
+        //private Texture2D background, arrowTexture, dialogTexture;
+        private Obj arrow;
         private Vector2 titlePos;
         private Color activeTitleColor, inactiveTitleColor;
-        private int mouseOverIndex, selected;
-        private float fontEffect = 0;
-        //private bool /*inGame, */songStart = false;
-        
+        private int mouseOverIndex;
+
         #endregion
 
         #region Initialization
-        public Menu(GameStateManager gameStateManager)
+        public Menu()
         {
             mouseOverIndex = 0; // decides which option has the current focus
-            selected = -1; // not selecting any options
-            //inGame = false;
             titles = new string[] { "Start Game", "Continue", "Credits", "Options", "Exit" };
             actives = new bool[] { true, false, true, true, true };
 
@@ -50,7 +46,8 @@ namespace BulletHell.System
                 menuNodes[i] = new MenuNode(titles[i], actives[i]);
         }
 
-        protected override void Initialize() {
+        protected override void Initialize()
+        {
             titlePos = new Vector2(_GLOBAL.Viewport.Width - 180, 100);
             activeTitleColor = new Color(0, 0, 0, 200);
             inactiveTitleColor = new Color(0, 0, 0, 100);
@@ -64,9 +61,7 @@ namespace BulletHell.System
         internal override void LoadContent()
         {
             arrowTexture = _GLOBAL.ContentManager.Load<Texture2D>(@"sprites\arrow");
-            background = _GLOBAL.ContentManager.Load<Texture2D>(@"sprites\background");
-            dialogTexture = _GLOBAL.ContentManager.Load<Texture2D>(@"sprites\dialogBox");
-            huakanFont = _GLOBAL.ContentManager.Load<SpriteFont>(@"fonts\DFShaoNvW5-GB");
+            //dialogTexture = _GLOBAL.ContentManager.Load<Texture2D>(@"sprites\dialogBox");
         }
 
         protected override void UnloadContent() { }
@@ -75,78 +70,61 @@ namespace BulletHell.System
         #region Update and Draw
         internal override void Update(GameTime gameTime)
         {
-            if (selected == -1)
-            {
-                if (_GLOBAL.InputHandler.isKeyUp())
-                {
-                    for (int i = mouseOverIndex; mouseOverIndex != i + 1;)
-                    {
-                        mouseOverIndex = (mouseOverIndex > 0) ? mouseOverIndex - 1 : menuNodes.Length - 1;
-                        if (menuNodes[mouseOverIndex].Active) break;
-                        if (i == menuNodes.Length && mouseOverIndex == 0) break;
-                    }
-
-                    //BulletHell.audioManager.play("cursorMove");
-                }
-                else if (_GLOBAL.InputHandler.isKeyDown())
-                {
-                    for (int i = mouseOverIndex; mouseOverIndex != i - 1; )
-                    {
-                        mouseOverIndex = (mouseOverIndex < menuNodes.Length - 1) ? mouseOverIndex + 1 : 0;
-                        if (menuNodes[mouseOverIndex].Active) break;
-                        if (i == 0 && mouseOverIndex == menuNodes.Length) break;
-                    }
-
-                    //BulletHell.audioManager.play("cursorMove");
-                }
-                else if (_GLOBAL.InputHandler.isKeyEnter())
-                {
-                    selected = mouseOverIndex;
-                    //BulletHell.audioManager.play("confrim");
-                }
-
-                if (/*!inGame && */_GLOBAL.GameStateSelect != 0 && _GLOBAL.InputHandler.isKeyEscape())
-                {
-                    if (/*!inGame && */NeedDraw)
-                    {
-                        selected = 4;
-                        menuChoice();
-                    }
-                }
-
-                if (_GLOBAL.GameStateSelect == 0)
-                {
-                    _GLOBAL.GameStateSelect = 1;
-                    //inGame = false;
-                    NeedDraw = true;
-                }
-            }
-            else
-            {
-                menuChoice();
-            }
-
             NeedUpdate = true;
+            if (_GLOBAL.inGameState)
+                return;
+            
+            NeedDraw = true;
+            if (_GLOBAL.InputHandler.isKeyUp())
+            {
+                /* If the option is inactive, jumps to the next options */
+                while (true)
+                {
+                    mouseOverIndex = (mouseOverIndex - 1) % menuNodes.Length;
+
+                    /* Note: C# Mod, -1 % N = -1, it will not wrap around! */
+                    if (mouseOverIndex == -1) mouseOverIndex = menuNodes.Length - 1;
+                    if (menuNodes[mouseOverIndex].Active) break; // skips inactive options
+                }
+                _GLOBAL.SoundBank.PlayCue(_GLOBAL.onSelectOption);
+            }
+            
+            if (_GLOBAL.InputHandler.isKeyDown())
+            {
+                while (true)
+                {
+                    mouseOverIndex = (mouseOverIndex + 1) % menuNodes.Length;
+                    if (menuNodes[mouseOverIndex].Active) break;
+                }
+
+                _GLOBAL.SoundBank.PlayCue(_GLOBAL.onSelectOption);
+            }
+            
+            if (_GLOBAL.InputHandler.isKeyEnter())
+                selectOption(mouseOverIndex);
+            
+            if (_GLOBAL.InputHandler.isKeyEscape())
+                selectOption(4); // select exit
         }
 
         internal override void Draw(GameTime gameTime)
         {
             _GLOBAL.SpriteBatch.Begin(SpriteBlendMode.AlphaBlend);
-            _GLOBAL.SpriteBatch.Draw(background, _GLOBAL.ViewportRect, Color.White);
+            //_GLOBAL.SpriteBatch.Draw(background, _GLOBAL.ViewportRect, Color.White);
             for (int i = 0; i < menuNodes.Length; ++i)
             {
-                titlePos.Y = i*30 + 100;
+                titlePos.Y = i * 30 + 100;
 
                 if (menuNodes[i].Active)
                 {
-                    _GLOBAL.SpriteBatch.DrawString(huakanFont,
+                    _GLOBAL.SpriteBatch.DrawString(_GLOBAL.HuakanFont,
                         menuNodes[i].Title, titlePos,
                         activeTitleColor, 0.0f, Vector2.Zero,
-                        (mouseOverIndex == i) ? 1.0f + (float)Math.Cos(fontEffect += 0.075f) / 12 : 1.0f,
+                        (mouseOverIndex == i) ? 1.0f + (float)Math.Cos(gameTime.TotalGameTime.TotalSeconds * 3) / 10 : 1.0f,
                         SpriteEffects.None, 0.0f);
                 }
                 else
-                    _GLOBAL.SpriteBatch.DrawString(huakanFont, menuNodes[i].Title, titlePos, inactiveTitleColor);
+                    _GLOBAL.SpriteBatch.DrawString(_GLOBAL.HuakanFont, menuNodes[i].Title, titlePos, inactiveTitleColor);
 
                 if (mouseOverIndex == i)
                 {
@@ -160,80 +138,41 @@ namespace BulletHell.System
 
         #region Methods
 
-        private void select(MenuNode node)
+        private void selectOption(int index)
         {
-            //inGame = true;
-            _GLOBAL.GameStateManager.activate(node.GameState);
-        }
-
-        private void menuChoice()
-        {
-            GameState tmpState;
-            switch (selected)
+            if (menuNodes[index].GameState != null)
             {
-                case 0:
-                    if (menuNodes[selected].GameState == null)
-                    {
-                        tmpState = new StartGame(_GLOBAL.GameStateManager);
-                        changeState(tmpState);
-                    }
-                    else changeState(menuNodes[selected].GameState);
+                _GLOBAL.GameStateManager.activate(menuNodes[index].GameState);
+                _GLOBAL.inGameState = true;
+                _GLOBAL.SoundBank.PlayCue(_GLOBAL.onConfirm);
+                return;
+            }
+            Debug.Assert(index >= 0 && index <= menuNodes.Length);
+
+            switch (index)
+            {
+                case 0: // Start Game
+                    menuNodes[index].GameState = new StartGame();
                     NeedDraw = false;
                     break;
                 case 1:
-                   // Continue;
-                    selected = -1;
-                    NeedDraw = true; 
-                    break;
-                case 2:
-                    if (menuNodes[selected].GameState == null)
-                    {
-                        tmpState = new Credits(_GLOBAL.GameStateManager);
-                        changeState(tmpState);
-                    }
-                    else changeState(menuNodes[selected].GameState);
-
+                    // Continue;
+                    NeedDraw = true;
+                    return;
+                case 2: // Credits
+                    menuNodes[index].GameState = new Credits();
                     NeedDraw = false;
                     break;
-                case 3:
-                    //Setting;
-                    selected = -1;
+                case 3: // Settings
+                    NeedDraw = true;
+                    return;
+                case 4: // Exit
+                    menuNodes[index].GameState = new Dialog("Exit", "Are you sure you want to quit?",
+                                        new Vector2(_GLOBAL.Viewport.Width, _GLOBAL.Viewport.Height));
                     NeedDraw = true;
                     break;
-                case 4:
-
-                    if (menuNodes[selected].GameState == null)
-                    {
-                        dialogBox = new Obj(dialogTexture, _GLOBAL.Viewport.Width, _GLOBAL.Viewport.Height);
-
-                        tmpState = new Dialog(_GLOBAL.GameStateManager, dialogBox.sprite,
-                                           "Exit", "Are you sure you want to quit?",
-                                            dialogBox.position);
-                        changeState(tmpState);
-                    }
-                    else changeState(menuNodes[selected].GameState);
-                    NeedDraw = true;
-                    break;
-                default:
-                    _GLOBAL.Quit = true;
-                    break;
             }
-        }
-
-        private void changeState(GameState newState) {
-            if (_GLOBAL.GameStateSelect == 0)
-            {
-                selected = -1;
-                return;
-            }
-
-            if (menuNodes[selected].GameState == null)
-            {
-                menuNodes[selected].GameState = newState;
-                select(menuNodes[selected]);
-            }
-            else
-                menuNodes[selected].action();
+            selectOption(index);
         }
         #endregion
     }

@@ -27,9 +27,8 @@ namespace BulletHell.System
         #endregion
 
         #region Initialization
-        public Dialog(GameStateManager gameStateManager, Texture2D dialogBox, string title, string message, Vector2 position2)
+        public Dialog(string title, string message, Vector2 position2)
         {
-            this.dialogBox = dialogBox;
             this.title = title;
             this.message = message;
             position = position2;
@@ -85,7 +84,7 @@ namespace BulletHell.System
                 if (selected == 1)
                     _GLOBAL.Quit = true;
                 selected = -1;
-                _GLOBAL.GameStateSelect = 0;
+                _GLOBAL.inGameState = false;
                 NeedDraw = false;
                 NeedUpdate = false;
             }

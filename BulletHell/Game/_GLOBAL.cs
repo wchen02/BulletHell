@@ -27,11 +27,16 @@ namespace BulletHell.Game
         public static Viewport Viewport;
         public static Rectangle ViewportRect;
         public static SpriteFont SpriteFont;
+        public static SpriteFont HuakanFont;
         public static AudioEngine AudioEngine;
         public static WaveBank WaveBank;
         public static SoundBank SoundBank;
 
-        public static int GameStateSelect = -1;
+        public static string onConfirm = "onConfirm";
+        public static string onSelectOption = "onSelectOption";
+        public static string onCancel = "onCancel";
+
+        public static bool inGameState = false; // to be used with menu
         public static bool Quit;
     }
 }

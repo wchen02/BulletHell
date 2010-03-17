@@ -30,7 +30,7 @@ namespace BulletHell.Game
         #endregion
 
         #region Initialization
-        public StartGame(GameStateManager gameStateManager)
+        public StartGame()
         {}
 
         protected override void Initialize()
@@ -95,7 +95,7 @@ namespace BulletHell.Game
             //Initialized = false;
             NeedDraw = false;
             NeedUpdate = false;
-            _GLOBAL.GameStateSelect = 0;
+            _GLOBAL.inGameState = false;
             //gameStateManager.gameStates[0].NeedUpdate = true;
 
             isPause = false;

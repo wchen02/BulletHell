@@ -20,10 +20,6 @@ Content\sprites\character\char6.xnb
 Content\sprites\character\char7.xnb
 Content\sprites\character\char8.xnb
 Content\sprites\character\char9.xnb
-Content\SpaceWar\shipA.xnb
-Content\SpaceWar\shipB.xnb
-Content\SpaceWar\blackhole.xnb
-Content\SpaceWar\bullet.xnb
 Content\audio\effect\onCursorMoveEffect.xnb
 Content\audio\audioEngine.xgs
 Content\audio\waveBank.xwb

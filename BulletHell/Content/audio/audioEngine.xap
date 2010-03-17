@@ -242,12 +242,12 @@ Wave Bank
     Windows Bank Path Edited = 0;
     Seek Tables = 1;
     Compression Preset Name = <none>;
-    Bank Last Revised Low = 1900362096;
-    Bank Last Revised High = 30065994;
+    Bank Last Revised Low = 165315530;
+    Bank Last Revised High = 30066029;
 
     Wave
     {
-        Name = onCursorMoveEffect;
+        Name = onSelectOption;
         File = effect\onCursorMoveEffect.wav;
         Build Settings Last Modified Low = 1670863674;
         Build Settings Last Modified High = 30065856;
@@ -270,7 +270,7 @@ Wave Bank
 
     Wave
     {
-        Name = 04. VII-instrumental-;
+        Name = OpeningBGM;
         File = bgm\04. VII-instrumental-.wav;
         Build Settings Last Modified Low = 1813237113;
         Build Settings Last Modified High = 30065994;
@@ -302,7 +302,55 @@ Sound Bank
 
     Sound
     {
-        Name = onCursorMoveEffect;
+        Name = OpeningBGM;
+        Volume = -1200;
+        Pitch = 0;
+        Priority = 0;
+
+        Category Entry
+        {
+            Name = Default;
+        }
+
+        Track
+        {
+            Volume = 0;
+            Use Filter = 0;
+
+            Play Wave Event
+            {
+                Loop Count = 255;
+                Break Loop = 0;
+                Use Speaker Position = 0;
+                Use Center Speaker = 1;
+                New Speaker Position On Loop = 1;
+                Speaker Position Angle = 0.000000;
+                Speaer Position Arc = 0.000000;
+
+                Event Header
+                {
+                    Timestamp = 0;
+                    Relative = 0;
+                    Random Recurrence = 0;
+                    Random Offset = 0;
+                }
+
+                Wave Entry
+                {
+                    Bank Name = waveBank;
+                    Bank Index = 0;
+                    Entry Name = OpeningBGM;
+                    Entry Index = 1;
+                    Weight = 255;
+                    Weight Min = 0;
+                }
+            }
+        }
+    }
+
+    Sound
+    {
+        Name = onSelectOption;
         Volume = -1200;
         Pitch = 0;
         Priority = 0;
@@ -338,7 +386,7 @@ Sound Bank
                 {
                     Bank Name = waveBank;
                     Bank Index = 0;
-                    Entry Name = onCursorMoveEffect;
+                    Entry Name = onSelectOption;
                     Entry Index = 0;
                     Weight = 255;
                     Weight Min = 0;
@@ -349,9 +397,9 @@ Sound Bank
 
     Sound
     {
-        Name = 04. VII-instrumental-;
-        Volume = -1200;
-        Pitch = 0;
+        Name = onConfirm;
+        Volume = 0;
+        Pitch = -1053;
         Priority = 0;
 
         Category Entry
@@ -385,8 +433,8 @@ Sound Bank
                 {
                     Bank Name = waveBank;
                     Bank Index = 0;
-                    Entry Name = 04. VII-instrumental-;
-                    Entry Index = 1;
+                    Entry Name = onSelectOption;
+                    Entry Index = 0;
                     Weight = 255;
                     Weight Min = 0;
                 }
@@ -396,7 +444,7 @@ Sound Bank
 
     Cue
     {
-        Name = onCursorMoveEffect;
+        Name = OpeningBGM;
 
         Variation
         {
@@ -407,7 +455,7 @@ Sound Bank
 
         Sound Entry
         {
-            Name = onCursorMoveEffect;
+            Name = OpeningBGM;
             Index = 0;
             Weight Min = 0;
             Weight Max = 255;
@@ -416,7 +464,7 @@ Sound Bank
 
     Cue
     {
-        Name = 04. VII-instrumental-;
+        Name = onSelectOption;
 
         Variation
         {
@@ -427,8 +475,28 @@ Sound Bank
 
         Sound Entry
         {
-            Name = 04. VII-instrumental-;
+            Name = onSelectOption;
             Index = 1;
+            Weight Min = 0;
+            Weight Max = 255;
+        }
+    }
+
+    Cue
+    {
+        Name = onConfirm;
+
+        Variation
+        {
+            Variation Type = 3;
+            Variation Table Type = 1;
+            New Variation on Loop = 0;
+        }
+
+        Sound Entry
+        {
+            Name = onConfirm;
+            Index = 2;
             Weight Min = 0;
             Weight Max = 255;
         }

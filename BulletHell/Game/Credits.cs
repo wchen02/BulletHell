@@ -28,7 +28,7 @@ namespace BulletHell.Game
         #endregion
 
         #region Initialization
-        public Credits(GameStateManager gameStateManager)
+        public Credits()
         {
         }
 
@@ -92,7 +92,7 @@ namespace BulletHell.Game
         #region Methods
         private void reset()
         {
-            _GLOBAL.GameStateSelect = 0;
+            _GLOBAL.inGameState = false;
             NeedUpdate = false;
             NeedDraw = false;
             transition = false;
