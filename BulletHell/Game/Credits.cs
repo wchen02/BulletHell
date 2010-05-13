@@ -20,11 +20,11 @@ namespace BulletHell.Game
     public class Credits : GameState
     {
         #region Fields
-        private string credits;
-        private Vector2 creditPos;
+        private List<string> credits = new List<string>(); // Text to be shown
+        private List<Vector2> creditPos = new List<Vector2>(); // Position of each text string
         private Texture2D creditTexture, background;
-        private bool transition = false;
-        private float aplhaValue = 45.0f;
+        private bool transition;
+        private float aplhaValue;
         #endregion
 
         #region Initialization
@@ -34,13 +34,12 @@ namespace BulletHell.Game
 
         protected override void Initialize()
         {
-            credits = "   This game is created by\n\n";
-            credits += "         Wensheng Chen    \n\n";
-            credits += "for Game Programming Class\n\n";
-            credits += "    Prof.John Sterling    \n\n";
-            credits += "   NYU:POLY 2010 Spring   \n\n";
-            creditPos = new Vector2(_GLOBAL.Viewport.Width / 2 - 150,
-                _GLOBAL.Viewport.Height);
+            credits.Add("This game is created by");
+            credits.Add("Wensheng Chen");
+            credits.Add("for Game Programming Class");
+            credits.Add("Prof.John Sterling");
+            credits.Add("NYU:POLY 2010 Spring");
+            init();
         }
         #endregion
 
@@ -57,24 +56,42 @@ namespace BulletHell.Game
         #region Update and Draw
         internal override void Update(GameTime gameTime)
         {
-            NeedDraw= true;
-            NeedUpdate = true;
-            creditPos.Y -= 2;
+            _GLOBAL.InputHandler.keyboardState = Keyboard.GetState();
 
+            NeedDraw = true;
+            NeedUpdate = true;
+
+            /* Return to menu if Esc is pressed */
             if (_GLOBAL.InputHandler.isKeyEscape())
             {
-                reset();
+                NeedUpdate = false;
+                NeedDraw = false;
+                _GLOBAL.inGameState = false;
+                init();
             }
 
-            if (creditPos.Y < -250)
+            for (int i = 0; i < 5; ++i)
+            {
+                creditPos[i] = new Vector2(creditPos[i].X, creditPos[i].Y - 2);
+            }
+
+
+            if (creditPos[0].Y < -250)
             {
                 transition = true;
                 aplhaValue += 0.005f;
             }
-            if (creditPos.Y < -500)
+
+            if (creditPos[0].Y < -900)
             {
-                reset();
+                NeedUpdate = false;
+                NeedDraw = false;
+                _GLOBAL.inGameState = false;
+                _GLOBAL.GameStateManager.GameStates.Remove(this);
+                init();
             }
+            _GLOBAL.InputHandler.previousKeyboardState = _GLOBAL.InputHandler.keyboardState;
+
         }
 
         internal override void Draw(GameTime gameTime)
@@ -84,20 +101,27 @@ namespace BulletHell.Game
                 _GLOBAL.SpriteBatch.Draw(background, _GLOBAL.ViewportRect, Color.White);
 
             _GLOBAL.SpriteBatch.Draw(creditTexture, _GLOBAL.ViewportRect, new Color(255.0f, 255.0f, 255.0f, (float)Math.Cos(aplhaValue)));
-            _GLOBAL.SpriteBatch.DrawString(_GLOBAL.SpriteFont, credits, creditPos, Color.White);
+            for (int i = 0; i < credits.Count; ++i)
+            {
+                _GLOBAL.SpriteBatch.DrawString(_GLOBAL.SpriteFont, credits[i], creditPos[i], Color.White);
+            }
             _GLOBAL.SpriteBatch.End();
         }
         #endregion
 
         #region Methods
-        private void reset()
+        private void init()
         {
-            _GLOBAL.inGameState = false;
-            NeedUpdate = false;
-            NeedDraw = false;
+            creditPos.Clear();
+            for (int i = 0; i < credits.Count; ++i)
+            {
+                /* Center aligns all text */
+                creditPos.Add(new Vector2(_GLOBAL.Viewport.Width / 2 - _GLOBAL.SpriteFont.MeasureString(credits[i]).X / 2,
+                _GLOBAL.Viewport.Height + i * (_GLOBAL.HuakanFont.MeasureString(credits[i]).Y + 5)));
+            }
+
             transition = false;
-            creditPos.Y = _GLOBAL.Viewport.Height;
-            aplhaValue = 45.0f;
+            aplhaValue = 0;
         }
         #endregion
     }

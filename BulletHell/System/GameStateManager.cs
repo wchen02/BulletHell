@@ -17,13 +17,14 @@ using BulletHell.Game.Interface;
 
 namespace BulletHell.System
 {
-    public class GameStateManager : DrawableGameComponent
+    /* this class is reponsible for transitioning the game from one state to another. */
+    public class GameStateManager : DrawableGameComponent // DrawableGameComponent's update and draw methods will be called by the game class's relevant methods.
     {
         #region class
         public List<GameState> GameStates { get; private set; }
         public List<GameState> GameStatesToUpdate { get; private set; }
 
-        public GameStateManager(BulletHell game) : base(game){}
+        public GameStateManager(BulletHell game) : base(game) { }
 
         public override void Initialize()
         {
@@ -31,7 +32,6 @@ namespace BulletHell.System
             GameStatesToUpdate = new List<GameState>();
 
             base.Initialize();
-            activate(new Opening());
         }
 
         protected override void LoadContent()
@@ -42,8 +42,11 @@ namespace BulletHell.System
 
         protected override void UnloadContent()
         {
+            //foreach (GameState gameState in GameStates)
+            //    gameState.UnloadContent();
         }
 
+        /* Checks all game states in array, add them to be updated if NeedUpdate is on. */
         public override void Update(GameTime gameTime)
         {
             foreach (GameState gameState in GameStates)
@@ -54,8 +57,8 @@ namespace BulletHell.System
             {
                 GameState gameState = GameStatesToUpdate[GameStatesToUpdate.Count - 1];
                 gameState.NeedUpdate = false;
-                gameState.Update(gameTime);
-                GameStatesToUpdate.RemoveAt(GameStatesToUpdate.Count-1);
+                gameState.Update(gameTime); // never directly add game state to the GameStatesToUpdate
+                GameStatesToUpdate.RemoveAt(GameStatesToUpdate.Count - 1); // because they will be remove here.
             }
             base.Update(gameTime);
         }
@@ -65,6 +68,7 @@ namespace BulletHell.System
             foreach (GameState gameState in GameStates)
                 if (gameState.NeedDraw)
                     gameState.Draw(gameTime);
+
             base.Draw(gameTime);
         }
 
@@ -92,6 +96,14 @@ namespace BulletHell.System
             activate(gameState, true);
         }
 
+        internal void setUpdate(GameState gameState, bool value)
+        {
+            foreach (GameState gs in GameStates)
+                if(gs == gameState)
+                    gs.NeedUpdate = value;
+
+            GameStatesToUpdate.Remove(gameState);
+        }
         #endregion
     }
 }

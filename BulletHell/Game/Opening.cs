@@ -22,29 +22,39 @@ namespace BulletHell.Game
         private Texture2D background;
         private GameState menu;
         private bool isStartPressed;
-        private Vector2 originPos, startPos;
+        private Vector2 startPos;
         private float startScale;
+        private String startMsg = "Press Start";
+
         public Opening() { }
 
         protected override void Initialize()
         {
             menu = new Menu();
-            originPos = new Vector2(_GLOBAL.Viewport.Width / 2 - (int)(11.0 / 2 * 15), _GLOBAL.Viewport.Height - 200);
-            startPos = originPos;
         }
 
         internal override void LoadContent()
         {
             background = _GLOBAL.ContentManager.Load<Texture2D>(@"sprites\background");
-            _GLOBAL.SoundBank.PlayCue("OpeningBGM");
+            _GLOBAL.BGM = _GLOBAL.SoundBank.GetCue("OpeningBGM"); 
+            _GLOBAL.BGM.Play();
         }
 
         protected override void UnloadContent() { }
 
-        internal override void Update(GameTime gameTime) {
+        internal override void Update(GameTime gameTime)
+        {
             NeedUpdate = true;
             NeedDraw = true;
 
+            _GLOBAL.InputHandler.keyboardState = Keyboard.GetState();
+
+            Vector2 startVect = _GLOBAL.HuakanFont.MeasureString(startMsg);
+
+            /* Put the string in the center of x axis and at the bottom 200 of y axis */
+            startPos = new Vector2(_GLOBAL.Viewport.Width / 2 - startVect.X / 2, _GLOBAL.Viewport.Height - 200);
+
+            /* Activate menu if enter is pressed */
             if (!isStartPressed)
             {
                 if (_GLOBAL.InputHandler.isKeyEnter())
@@ -55,12 +65,8 @@ namespace BulletHell.Game
                 }
 
                 startScale = 1.0f + (float)Math.Cos(gameTime.TotalGameTime.TotalSeconds * 1.2) / 20;
-
-                Matrix scalingStart = Matrix.CreateScale(startPos.X, startPos.Y, 1);
-                scalingStart = Matrix.Multiply(scalingStart, Matrix.CreateScale(startScale, startScale, 1.0f));
-
-                startPos = new Vector2((scalingStart.M11)/2, (scalingStart.M22)/2);
             }
+            _GLOBAL.InputHandler.previousKeyboardState = _GLOBAL.InputHandler.keyboardState;
         }
 
         internal override void Draw(GameTime gameTime)
@@ -70,7 +76,8 @@ namespace BulletHell.Game
 
             if (!isStartPressed)
             {
-                _GLOBAL.SpriteBatch.DrawString(_GLOBAL.HuakanFont, "Press Start", startPos,
+                /* Draws the string with growing and shrinking effect */
+                _GLOBAL.SpriteBatch.DrawString(_GLOBAL.HuakanFont, startMsg, startPos,
                     new Color(1.0f, 1.0f, 1.0f, 0.6f + (float)Math.Cos(gameTime.TotalGameTime.TotalSeconds * 1.2) / 3),
                     0.0f, Vector2.Zero, startScale, SpriteEffects.None, 0);
             }

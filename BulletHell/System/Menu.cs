@@ -17,6 +17,10 @@ using System.Diagnostics;
 
 namespace BulletHell.System
 {
+    /* An Abstraction layer can be extracted to be used for future menus; reusability. 
+     * This menu class is super hard to maintain & debug because of the use of classical state transitioning.
+     * It has to be redesigned to use object oriented hierarchical state transitioning if reusability is concerned. */
+
     public class Menu : GameState
     {
         #region Fields
@@ -24,7 +28,6 @@ namespace BulletHell.System
         private string[] titles;
         private bool[] actives;
         private Texture2D arrowTexture;
-        //private Texture2D background, arrowTexture, dialogTexture;
         private Obj arrow;
         private Vector2 titlePos;
         private Color activeTitleColor, inactiveTitleColor;
@@ -36,8 +39,8 @@ namespace BulletHell.System
         public Menu()
         {
             mouseOverIndex = 0; // decides which option has the current focus
-            titles = new string[] { "Start Game", "Continue", "Credits", "Options", "Exit" };
-            actives = new bool[] { true, false, true, true, true };
+            titles = new string[] { "Start Game", "Continue", "Credits", "Options", "Exit" }; // Options
+            actives = new bool[] { true, false, true, true, true }; 
 
             Debug.Assert(titles.Length == actives.Length);
 
@@ -61,7 +64,6 @@ namespace BulletHell.System
         internal override void LoadContent()
         {
             arrowTexture = _GLOBAL.ContentManager.Load<Texture2D>(@"sprites\arrow");
-            //dialogTexture = _GLOBAL.ContentManager.Load<Texture2D>(@"sprites\dialogBox");
         }
 
         protected override void UnloadContent() { }
@@ -70,15 +72,21 @@ namespace BulletHell.System
         #region Update and Draw
         internal override void Update(GameTime gameTime)
         {
+            _GLOBAL.InputHandler.keyboardState = Keyboard.GetState();
             NeedUpdate = true;
+
             if (_GLOBAL.inGameState)
                 return;
             
             NeedDraw = true;
+
+            /* Keyboard Events, needs to do events with listeners, but I haven't study them. */
             if (_GLOBAL.InputHandler.isKeyUp())
             {
-                /* If the option is inactive, jumps to the next options */
-                while (true)
+                /* If the option is inactive, jumps to the next options
+                 * // This will introduce infinite loops if all options are inactive; 
+                 * However, all options being inactive is not possible as there will be no option to pick.*/
+                while (true) 
                 {
                     mouseOverIndex = (mouseOverIndex - 1) % menuNodes.Length;
 
@@ -91,7 +99,7 @@ namespace BulletHell.System
             
             if (_GLOBAL.InputHandler.isKeyDown())
             {
-                while (true)
+                while (true) // Reference to the comment on isKeyUp() above
                 {
                     mouseOverIndex = (mouseOverIndex + 1) % menuNodes.Length;
                     if (menuNodes[mouseOverIndex].Active) break;
@@ -104,13 +112,14 @@ namespace BulletHell.System
                 selectOption(mouseOverIndex);
             
             if (_GLOBAL.InputHandler.isKeyEscape())
-                selectOption(4); // select exit
+                selectOption(4); // Selects exit
+
+            _GLOBAL.InputHandler.previousKeyboardState = _GLOBAL.InputHandler.keyboardState;
         }
 
         internal override void Draw(GameTime gameTime)
         {
             _GLOBAL.SpriteBatch.Begin(SpriteBlendMode.AlphaBlend);
-            //_GLOBAL.SpriteBatch.Draw(background, _GLOBAL.ViewportRect, Color.White);
             for (int i = 0; i < menuNodes.Length; ++i)
             {
                 titlePos.Y = i * 30 + 100;
@@ -120,7 +129,7 @@ namespace BulletHell.System
                     _GLOBAL.SpriteBatch.DrawString(_GLOBAL.HuakanFont,
                         menuNodes[i].Title, titlePos,
                         activeTitleColor, 0.0f, Vector2.Zero,
-                        (mouseOverIndex == i) ? 1.0f + (float)Math.Cos(gameTime.TotalGameTime.TotalSeconds * 3) / 10 : 1.0f,
+                        (mouseOverIndex == i) ? 1.0f + (float)Math.Cos(gameTime.TotalGameTime.TotalSeconds * 3) / 10 : 1.0f, /* Growing and shringing effect as time goes */
                         SpriteEffects.None, 0.0f);
                 }
                 else
@@ -140,39 +149,46 @@ namespace BulletHell.System
 
         private void selectOption(int index)
         {
-            if (menuNodes[index].GameState != null)
-            {
-                _GLOBAL.GameStateManager.activate(menuNodes[index].GameState);
-                _GLOBAL.inGameState = true;
-                _GLOBAL.SoundBank.PlayCue(_GLOBAL.onConfirm);
-                return;
-            }
             Debug.Assert(index >= 0 && index <= menuNodes.Length);
 
             switch (index)
             {
                 case 0: // Start Game
                     menuNodes[index].GameState = new StartGame();
+                    select(index);
                     NeedDraw = false;
                     break;
                 case 1:
                     // Continue;
                     NeedDraw = true;
-                    return;
+                    break;
                 case 2: // Credits
                     menuNodes[index].GameState = new Credits();
+                    select(index);
                     NeedDraw = false;
                     break;
                 case 3: // Settings
                     NeedDraw = true;
-                    return;
+                    break;
                 case 4: // Exit
                     menuNodes[index].GameState = new Dialog("Exit", "Are you sure you want to quit?",
-                                        new Vector2(_GLOBAL.Viewport.Width, _GLOBAL.Viewport.Height));
+                                        new Vector2(_GLOBAL.Viewport.Width/2, _GLOBAL.Viewport.Height/2));
+                    select(index);
                     NeedDraw = true;
                     break;
             }
-            selectOption(index);
+        }
+
+        private void select(int index)
+        {
+            _GLOBAL.GameStateManager.activate(menuNodes[index].GameState);
+            _GLOBAL.inGameState = true;
+            if (!_GLOBAL.BGM.IsDisposed)
+            {
+                _GLOBAL.BGM.Stop(AudioStopOptions.Immediate);
+                _GLOBAL.BGM.Dispose();
+            }
+            _GLOBAL.SoundBank.PlayCue(_GLOBAL.onConfirm);
         }
         #endregion
     }

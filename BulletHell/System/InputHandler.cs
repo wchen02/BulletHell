@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace BulletHell.System
 {
+    /* To use this class, the keyboardState and previousKeyboardState has to be updated in the game state. */
     public class InputHandler
     {
         #region Fields
@@ -42,8 +43,10 @@ namespace BulletHell.System
 
         #region Methods
         public void Update(GameTime gameTime) {
-            previousKeyboardState = keyboardState;
-            keyboardState = Keyboard.GetState();
+            /* These two statement has been disable because they have proven themselves to be not efficient */
+
+            //_GLOBAL.InputHandler.keyboardState = Keyboard.GetState(); 
+            //_GLOBAL.InputHandler.previousKeyboardState = _GLOBAL.InputHandler.keyboardState;
         }
 
         public bool isKeyDown()

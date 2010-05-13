@@ -1,0 +1,5 @@
+<map id="G" name="G">
+<area shape="rect" id="node2" href="$class_bullet_hell_1_1_game_1_1_object_1_1_moveable_obj.html" title="BulletHell.Game.Object.MoveableObj" alt="" coords="104,86,381,117"/>
+<area shape="rect" id="node4" href="$class_bullet_hell_1_1_game_1_1_object_1_1_obj.html" title="BulletHell.Game.Object.Obj" alt="" coords="5,6,216,37"/>
+<area shape="rect" id="node6" href="$interface_bullet_hell_1_1_game_1_1_interface_1_1_i_moveable.html" title="BulletHell.Game.Interface.IMoveable" alt="" coords="240,6,509,37"/>
+</map>

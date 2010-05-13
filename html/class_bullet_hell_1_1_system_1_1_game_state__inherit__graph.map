@@ -1,0 +1,10 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$class_bullet_hell_1_1_game_1_1_continue.html" title="BulletHell.Game.Continue" alt="" coords="288,5,485,35"/>
+<area shape="rect" id="node5" href="$class_bullet_hell_1_1_game_1_1_credits.html" title="BulletHell.Game.Credits" alt="" coords="293,58,480,89"/>
+<area shape="rect" id="node7" href="$class_bullet_hell_1_1_game_1_1_map.html" title="BulletHell.Game.Map" alt="" coords="303,111,471,142"/>
+<area shape="rect" id="node9" href="$class_bullet_hell_1_1_game_1_1_opening.html" title="BulletHell.Game.Opening" alt="" coords="289,165,484,195"/>
+<area shape="rect" id="node11" href="$class_bullet_hell_1_1_game_1_1_setting.html" title="BulletHell.Game.Setting" alt="" coords="293,218,480,249"/>
+<area shape="rect" id="node13" href="$class_bullet_hell_1_1_game_1_1_start_game.html" title="BulletHell.Game.StartGame" alt="" coords="280,271,493,302"/>
+<area shape="rect" id="node15" href="$class_bullet_hell_1_1_system_1_1_dialog.html" title="BulletHell.System.Dialog" alt="" coords="291,325,483,355"/>
+<area shape="rect" id="node17" href="$class_bullet_hell_1_1_system_1_1_menu.html" title="BulletHell.System.Menu" alt="" coords="295,378,479,409"/>
+</map>

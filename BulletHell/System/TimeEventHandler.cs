@@ -28,18 +28,18 @@ namespace BulletHell.System
             timeElapsed += gameTime.ElapsedGameTime;
         }
 
-        public int elapsedSeconds() {
-            return timeElapsed.Seconds;
+        public double elapsedSeconds() {
+            return timeElapsed.TotalSeconds;
         }
 
-        public int elapsedMilliseconds()
+        public double elapsedMilliseconds()
         {
-            return timeElapsed.Milliseconds;
+            return timeElapsed.TotalMilliseconds;
         }
 
-        public int elapsedMinutes()
+        public double elapsedMinutes()
         {
-            return timeElapsed.Minutes;
+            return timeElapsed.TotalMinutes;
         }
 
         public void reset()

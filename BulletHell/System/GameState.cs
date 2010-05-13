@@ -13,10 +13,15 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace BulletHell.System
 {
-    public abstract class GameState
+    /* Abstract game state
+     * Possible improvement of a solid gamestate is to exclude NeedUpdate and NeedDraw from the abstract class; 
+     * Using stack to keep game states for the game state manager.
+     * These two variables has proven more trouble than help. */
+
+    public abstract class GameState 
     {
-        internal bool NeedUpdate { get; set; }
-        internal bool NeedDraw { get; set; }
+        internal bool NeedUpdate { get; set; } // Determines if a game state needs to be updated
+        internal bool NeedDraw { get; set; } // Determines if a game state needs to be drawn
 
         public GameState()
         {
@@ -35,7 +40,8 @@ namespace BulletHell.System
     }
 }
 
-#region template
+/* Template for derived classes */
+#region Template
 /*
 using System;
 using System.Collections.Generic;
@@ -58,25 +64,17 @@ namespace BulletHell.Game
 {
     public class : GameState
     {
-        public ()
-        {
-        }
+        public () { }
 
-        protected override void Initialize()()
-        {
-        }
+        protected override void Initialize() { }
 
-        internal override void LoadContent()
-        {
-        }
+        internal override void LoadContent() { }
 
         protected override void UnloadContent() { }
 
         internal override void Update(GameTime gameTime) { }
 
-        internal override void Draw(GameTime gameTime)
-        {
-        }
+        internal override void Draw(GameTime gameTime) { }
     }
 }
 */

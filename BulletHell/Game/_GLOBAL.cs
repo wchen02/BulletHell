@@ -31,12 +31,14 @@ namespace BulletHell.Game
         public static AudioEngine AudioEngine;
         public static WaveBank WaveBank;
         public static SoundBank SoundBank;
+        public static Cue BGM;
 
         public static string onConfirm = "onConfirm";
         public static string onSelectOption = "onSelectOption";
         public static string onCancel = "onCancel";
 
-        public static bool inGameState = false; // to be used with menu
+        public static bool inGameState = false; // to be used with menu, it can be improved by having a stack gamestate manager
         public static bool Quit;
+        public static bool Debug = false;
     }
 }

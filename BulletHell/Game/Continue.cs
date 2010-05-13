@@ -17,6 +17,7 @@ using BulletHell.Game.Interface;
 
 namespace BulletHell.Game
 {
+    /* I don't have a stopping point in the game yet, so this is empty */
     public class Continue : GameState
     {
         #region Fields

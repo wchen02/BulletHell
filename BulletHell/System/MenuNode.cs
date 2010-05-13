@@ -36,7 +36,7 @@ namespace BulletHell.System
 
         public MenuNode(string title, bool active){
             Title = title;
-            Active = active;
+            Active = active; // if inactive, the title will not be selectable and is drawn with gray color.
         }
     }
 }

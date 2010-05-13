@@ -17,6 +17,7 @@ using BulletHell.Game.Interface;
 
 namespace BulletHell.Game
 {
+    /* No Settings as of yet */
     public class Setting : GameState
     {
         #region Fields

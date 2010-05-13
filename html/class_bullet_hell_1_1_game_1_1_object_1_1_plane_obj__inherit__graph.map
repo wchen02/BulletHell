@@ -1,0 +1,8 @@
+<map id="G" name="G">
+<area shape="rect" id="node11" href="$class_bullet_hell_1_1_game_1_1_object_1_1_enemy_plane_obj.html" title="BulletHell.Game.Object.EnemyPlaneObj" alt="" coords="5,326,304,357"/>
+<area shape="rect" id="node13" href="$class_bullet_hell_1_1_game_1_1_object_1_1_hero_plane_obj.html" title="BulletHell.Game.Object.HeroPlaneObj" alt="" coords="328,326,611,357"/>
+<area shape="rect" id="node2" href="$class_bullet_hell_1_1_game_1_1_object_1_1_moveable_sprite_obj.html" title="BulletHell.Game.Object.MoveableSpriteObj" alt="" coords="152,166,472,197"/>
+<area shape="rect" id="node4" href="$class_bullet_hell_1_1_game_1_1_object_1_1_moveable_obj.html" title="BulletHell.Game.Object.MoveableObj" alt="" coords="173,86,451,117"/>
+<area shape="rect" id="node6" href="$class_bullet_hell_1_1_game_1_1_object_1_1_obj.html" title="BulletHell.Game.Object.Obj" alt="" coords="75,6,285,37"/>
+<area shape="rect" id="node8" href="$interface_bullet_hell_1_1_game_1_1_interface_1_1_i_moveable.html" title="BulletHell.Game.Interface.IMoveable" alt="" coords="309,6,579,37"/>
+</map>

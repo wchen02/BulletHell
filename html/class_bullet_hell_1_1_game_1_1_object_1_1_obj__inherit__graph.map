@@ -1,0 +1,11 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$class_bullet_hell_1_1_game_1_1_object_1_1_moveable_obj.html" title="BulletHell.Game.Object.MoveableObj" alt="" coords="267,85,544,115"/>
+<area shape="rect" id="node19" href="$class_bullet_hell_1_1_game_1_1_object_1_1_shootable_obj.html" title="BulletHell.Game.Object.ShootableObj" alt="" coords="265,138,545,169"/>
+<area shape="rect" id="node5" href="$class_bullet_hell_1_1_game_1_1_object_1_1_bullet_obj.html" title="BulletHell.Game.Object.BulletObj" alt="" coords="631,58,879,89"/>
+<area shape="rect" id="node11" href="$class_bullet_hell_1_1_game_1_1_object_1_1_moveable_sprite_obj.html" title="BulletHell.Game.Object.MoveableSpriteObj" alt="" coords="595,111,915,142"/>
+<area shape="rect" id="node7" href="$class_bullet_hell_1_1_game_1_1_object_1_1_enemy_bullet_obj.html" title="BulletHell.Game.Object.EnemyBulletObj" alt="" coords="963,5,1259,35"/>
+<area shape="rect" id="node9" href="$class_bullet_hell_1_1_game_1_1_object_1_1_hero_bullet_obj.html" title="BulletHell.Game.Object.HeroBulletObj" alt="" coords="969,58,1252,89"/>
+<area shape="rect" id="node13" href="$class_bullet_hell_1_1_game_1_1_object_1_1_plane_obj.html" title="BulletHell.Game.Object.PlaneObj" alt="" coords="985,111,1236,142"/>
+<area shape="rect" id="node15" href="$class_bullet_hell_1_1_game_1_1_object_1_1_enemy_plane_obj.html" title="BulletHell.Game.Object.EnemyPlaneObj" alt="" coords="1307,85,1605,115"/>
+<area shape="rect" id="node17" href="$class_bullet_hell_1_1_game_1_1_object_1_1_hero_plane_obj.html" title="BulletHell.Game.Object.HeroPlaneObj" alt="" coords="1315,138,1597,169"/>
+</map>
